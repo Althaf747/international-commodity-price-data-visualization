@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Commodity Price Visualization</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+  h1 {
+    margin-bottom: 10px;
+  }
+  p.description {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  #buttonsContainer {
+    margin-bottom: 20px;
+  }
+  .btn {
+    border: 1px solid #ccc;
+    background: white;
+    padding: 8px 15px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .btn.active, .btn:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+  canvas {
+    max-width: 100%;
+    height: 400px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Commodity Prices Interactive Visualization</h1>
+<p class="description">Click on a commodity below to see its price trends over time.</p>
+
+<div id="buttonsContainer">
+  <!-- Buttons will be generated here -->
+</div>
+
+<canvas id="priceChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+<script>
+  // Path to your CSV file
+  const csvUrl = 'Selected_International_Commodity_Prices_data.csv'; // Place your CSV in same folder for GitHub Pages
+
+  let rawData = [];
+  let chart = null;
+
+  function parseDate(dateStr) {
+    if (!dateStr) return null;
+    if (/^\d{4}$/.test(dateStr)) {
+      return new Date(dateStr, 0, 1);
+    } else if (/^\d{6}$/.test(dateStr)) {
+      const year = dateStr.slice(0, 4);
+      const month = dateStr.slice(4, 6) - 1;
+      return new Date(year, month, 1);
+    } else {
+      return new Date(dateStr);
+    }
+  }
+
+  function createButtons(commodities) {
+    const container = document.getElementById('buttonsContainer');
+    container.innerHTML = '';
+    commodities.forEach((commodity, idx) => {
+      const btn = document.createElement('button');
+      btn.textContent = commodity;
+      btn.className = 'btn';
+      if(idx === 0) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateChartForCommodity(commodity);
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  function updateChartForCommodity(commodity) {
+    // Filter data for this commodity
+    const filtered = rawData.filter(d => d.COMMODITY === commodity);
+
+    // Get unique indicators for this commodity
+    const indicators = [...new Set(filtered.map(d => d.INDICATOR).filter(Boolean))];
+
+    // Prepare datasets by indicator
+    const datasets = indicators.map((indicator, i) => {
+      const dataPoints = filtered
+        .filter(d => d.INDICATOR === indicator)
+        .sort((a, b) => parseDate(a.TIME_PERIOD) - parseDate(b.TIME_PERIOD))
+        .map(d => ({x: parseDate(d.TIME_PERIOD), y: parseFloat(d.OBS_VALUE)}))
+        .filter(p => p.x && !isNaN(p.y));
+      const color = `hsl(${(i * 80) % 360}, 70%, 50%)`;
+      return {
+        label: indicator,
+        data: dataPoints,
+        borderColor: color,
+        backgroundColor: color,
+        fill: false,
+        tension: 0.2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      };
+    });
+
+    // Destroy old chart if exists
+    if(chart) chart.destroy();
+
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 500
+        },
+        parsing: false,
+        normalized: true,
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              tooltipFormat: 'MMM yyyy',
+              unit: 'month',
+              displayFormats: {
+                month: 'MMM yyyy'
+              }
+            },
+            title: {
+              display: true,
+              text: 'Time Period'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Observation Value'
+            },
+            beginAtZero: false
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              boxWidth: 12,
+              padding: 15
+            }
+          },
+          tooltip: {
+            mode: 'nearest',
+            intersect: false,
+          }
+        }
+      }
+    });
+  }
+
+  function initialize() {
+    Papa.parse(csvUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        rawData = results.data;
+        const commodities = [...new Set(rawData.map(d => d.COMMODITY).filter(Boolean))].sort();
+        createButtons(commodities);
+        if (commodities.length > 0) {
+          updateChartForCommodity(commodities[0]);
+        }
+      },
+      error: function(err) {
+        alert('Failed to load CSV data: ' + err.message);
+      }
+    });
+  }
+
+  window.onload = initialize;
+</script>
+
+</body>
+</html>
