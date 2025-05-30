@@ -63,18 +63,26 @@
   let rawData = [];
   let chart = null;
 
-  function parseDate(dateStr) {
-    if (!dateStr) return null;
-    if (/^\d{4}$/.test(dateStr)) {
-      return new Date(dateStr, 0, 1);
-    } else if (/^\d{6}$/.test(dateStr)) {
-      const year = dateStr.slice(0, 4);
-      const month = dateStr.slice(4, 6) - 1;
-      return new Date(year, month, 1);
-    } else {
-      return new Date(dateStr);
-    }
+function parseDate(dateStr) {
+  if (!dateStr) return null;
+  // Format bisa bervariasi, coba regex sederhana:
+  if (/^\d{4}$/.test(dateStr)) {
+    return new Date(dateStr, 0, 1);
+  } else if (/^\d{6}$/.test(dateStr)) {
+    const year = dateStr.slice(0, 4);
+    const month = dateStr.slice(4, 6) - 1;
+    return new Date(year, month, 1);
+  } else if (/^\d{8}$/.test(dateStr)) {
+    // Format YYYYMMDD
+    const year = dateStr.slice(0,4);
+    const month = dateStr.slice(4,6) -1;
+    const day = dateStr.slice(6,8);
+    return new Date(year, month, day);
+  } else {
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? null : d;
   }
+}
 
   function createButtons(commodities) {
     const container = document.getElementById('buttonsContainer');
@@ -93,88 +101,75 @@
     });
   }
 
-  function updateChartForCommodity(commodity) {
-    // Filter data for this commodity
-    const filtered = rawData.filter(d => d.COMMODITY === commodity);
+ function updateChartForCommodity(commodity) {
+  const filtered = rawData.filter(d => d.COMMODITY === commodity);
 
-    // Get unique indicators for this commodity
-    const indicators = [...new Set(filtered.map(d => d.INDICATOR).filter(Boolean))];
+  // Log sample data for debug
+  console.log(`Updating chart for commodity: ${commodity}`);
+  console.log(filtered.slice(0,5));
 
-    // Prepare datasets by indicator
-    const datasets = indicators.map((indicator, i) => {
-      const dataPoints = filtered
-        .filter(d => d.INDICATOR === indicator)
-        .sort((a, b) => parseDate(a.TIME_PERIOD) - parseDate(b.TIME_PERIOD))
-        .map(d => ({x: parseDate(d.TIME_PERIOD), y: parseFloat(d.OBS_VALUE)}))
-        .filter(p => p.x && !isNaN(p.y));
-      const color = `hsl(${(i * 80) % 360}, 70%, 50%)`;
-      return {
-        label: indicator,
-        data: dataPoints,
-        borderColor: color,
-        backgroundColor: color,
-        fill: false,
-        tension: 0.2,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-      };
-    });
+  const indicators = [...new Set(filtered.map(d => d.INDICATOR).filter(Boolean))];
 
-    // Destroy old chart if exists
-    if(chart) chart.destroy();
+  const datasets = indicators.map((indicator, i) => {
+    const dataPoints = filtered
+      .filter(d => d.INDICATOR === indicator)
+      .map(d => {
+        const x = parseDate(d.TIME_PERIOD);
+        const y = parseFloat(d.OBS_VALUE);
+        return (x && !isNaN(y)) ? {x, y} : null;
+      })
+      .filter(p => p !== null)
+      .sort((a,b) => a.x - b.x);
 
-    const ctx = document.getElementById('priceChart').getContext('2d');
-    chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        datasets: datasets
-      },
-      options: {
-        responsive: true,
-        animation: {
-          duration: 500
-        },
-        parsing: false,
-        normalized: true,
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              tooltipFormat: 'MMM yyyy',
-              unit: 'month',
-              displayFormats: {
-                month: 'MMM yyyy'
-              }
-            },
-            title: {
-              display: true,
-              text: 'Time Period'
-            }
+    console.log(`Indicator: ${indicator}, points:`, dataPoints.length);
+
+    const color = `hsl(${(i * 80) % 360}, 70%, 50%)`;
+    return {
+      label: indicator,
+      data: dataPoints,
+      borderColor: color,
+      backgroundColor: color,
+      fill: false,
+      tension: 0.2,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+    };
+  });
+
+  if(chart) chart.destroy();
+
+  const ctx = document.getElementById('priceChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: { datasets },
+    options: {
+      responsive: true,
+      animation: { duration: 500 },
+      parsing: false,
+      normalized: true,
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            tooltipFormat: 'MMM yyyy',
+            unit: 'month',
+            displayFormats: { month: 'MMM yyyy' }
           },
-          y: {
-            title: {
-              display: true,
-              text: 'Observation Value'
-            },
-            beginAtZero: false
-          }
+          title: { display: true, text: 'Time Period' }
         },
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              boxWidth: 12,
-              padding: 15
-            }
-          },
-          tooltip: {
-            mode: 'nearest',
-            intersect: false,
-          }
+        y: {
+          title: { display: true, text: 'Observation Value' },
+          beginAtZero: false
         }
+      },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } },
+        tooltip: { mode: 'nearest', intersect: false }
       }
-    });
-  }
+    }
+  });
+}
+
 
   function initialize() {
     Papa.parse(csvUrl, {
