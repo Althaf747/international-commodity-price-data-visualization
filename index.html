@@ -1,197 +1,694 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" class="scroll-smooth">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Interactive Commodity Price Visualization</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 0 15px;
-  }
-  h1 {
-    margin-bottom: 10px;
-  }
-  p.description {
-    font-size: 1rem;
-    margin-bottom: 20px;
-  }
-  #buttonsContainer {
-    margin-bottom: 20px;
-  }
-  .btn {
-    border: 1px solid #ccc;
-    background: white;
-    padding: 8px 15px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  .btn.active, .btn:hover {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-  }
-  canvas {
-    max-width: 100%;
-    height: 400px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menghadapi Ketidakpastian Global: Fluktuasi Energi, Tren Komoditas, dan Strategi Ketahanan Pangan Berkelanjutan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
-<body>
+<body class="max-w-5xl mx-auto p-6 text-gray-900 font-sans">
 
-<h1>Commodity Prices Interactive Visualization</h1>
-<p class="description">Click on a commodity below to see its price trends over time.</p>
-
-<div id="buttonsContainer">
-  <!-- Buttons will be generated here -->
+   <div class="max-w-xl mx-auto text-center mb-8">
+  <p class="uppercase text-sm font-light tracking-widest text-gray-500 mb-2">
+    Fluktuasi Harga Energi, Tren Logam dan Pangan
+  </p>
+  <h1 class="text-5xl font-extrabold leading-tight text-gray-900">
+    Dampak Global dan Strategi Berkelanjutan
+  </h1>
 </div>
 
-<canvas id="priceChart"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+<p class="text-lg mb-6 leading-relaxed max-w-xl mx-auto text-gray-700" style="text-align: justify; line-height: 1.6; font-size: 18px;">
+  Dinamika harga komoditas energi, logam, dan pangan selama dua dekade terakhir mencerminkan gejolak pasar global, pengaruh geopolitik, serta kebutuhan strategis dalam menjaga ketahanan industri dan pangan dunia.
+</p>
+
+
+  <!-- Insight 1 -->
+  <section class="mb-6 max-w-xl mx-auto" id="insight1-text">
+    <h2 class="text-2xl font-semibold mb-3 text-center">
+    Fluktuasi Harga Energi Global: Krisis, Lonjakan, dan Pemulihan
+  </h2>
+  <p style="text-align: justify; line-height: 1.6; font-size: 16px; color: #333;">
+    Harga <strong>minyak</strong>, <strong>gas</strong>, dan <strong>batubara</strong> mengalami perubahan tajam sepanjang tahun <strong>2005-2024</strong>. <strong>Krisis finansial 2008</strong> memicu penurunan tajam harga minyak, diikuti lonjakan harga pada <strong>2011</strong> karena ketegangan geopolitik di Timur Tengah. Pandemi <strong>COVID-19 pada 2020</strong> menekan permintaan energi, memicu penurunan sementara sebelum kembali pulih di tahun-tahun berikutnya. Fluktuasi ini berdampak signifikan pada <strong>biaya energi</strong> dan strategi pasokan global.
+  </p>
+
+    <div id="energy-toggle" class="flex justify-center space-x-3 mt-6">
+      <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="oil" aria-pressed="true">
+        Minyak
+      </button>
+      <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="gas" aria-pressed="false">
+        Gas
+      </button>
+      <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="coal" aria-pressed="false">
+        Batubara
+      </button>
+    </div>
+  </section>
+
+  <div id="chart-energy" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-20 max-w-full" style="width: 100%; max-width: 960px;">
+    <svg class="w-full h-[450px] select-none"></svg>
+    <div id="tooltip-energy" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+  </div>
+
+  <!-- Insight 2 -->
+  <section class="mb-6 max-w-xl mx-auto" id="insight2-text">
+    <h2 class="text-2xl font-semibold mb-3 text-center">
+    Tren Harga Logam Mulia, Industri, dan Pupuk: Cerminan Kebutuhan Manufaktur dan Pertanian
+  </h2>
+  <p style="text-align: justify; line-height: 1.6; font-size: 16px; color: #333;">
+    Harga logam mulia seperti <strong>emas</strong> dan <strong>perak</strong> stabil di kisaran <strong>$120-$180 per ons</strong>, menjadi indikator <strong>keamanan investasi</strong>. Logam industri seperti <strong>aluminium</strong>, <strong>tembaga</strong>, <strong>nikel</strong>, dan <strong>besi</strong> menunjukkan dinamika harga yang kuat, dengan tembaga mencapai <strong>$10.000 per ton</strong> pada puncaknya, menunjukkan permintaan manufaktur dan konstruksi yang tinggi. Harga pupuk mineral, seperti <strong>DAP</strong> dan <strong>UREA</strong>, berkisar <strong>$200-$500 per ton</strong>, kritikal bagi produktivitas pertanian global. Heatmap ini memvisualisasikan fluktuasi penting untuk strategi bisnis dan kebijakan agribisnis.
+  </p>
+    <div id="category-filter" class="flex justify-center gap-4 mb-4 max-w-xl mx-auto mt-6">
+      <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="precious_metal" aria-pressed="false">
+        Logam Mulia
+      </button>
+      <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="industrial_metal" aria-pressed="false">
+        Logam Industri
+      </button>
+      <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="fertilizer" aria-pressed="false">
+        Pupuk
+      </button>
+    </div>
+  </section>
+
+ <div id="chart-category-heatmap" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-20 max-w-full" style="width: 100%; max-width: 960px;">
+  <svg class="w-full h-[450px] select-none"></svg>
+  <div id="tooltip-category-heatmap" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+</div>
+
+  <!-- Insight 3 -->
+  <section class="mb-6 max-w-xl mx-auto" id="insight3-text">
+    <h2 class="text-2xl font-semibold mb-3 text-center">
+    Dinamika Harga Produk Laut, Daging, dan Pertanian: Kunci Ketahanan Pangan
+  </h2>
+  <p style="text-align: justify; line-height: 1.6; font-size: 16px; color: #333;">
+    Produk laut seperti <strong>udang</strong> dan <strong>tuna</strong> berfluktuasi di kisaran <strong>$10-$40 per kilogram</strong>, dengan puncak harga tuna mencapai lebih dari <strong>$40 per kilogram</strong> pada <strong>2017</strong>. Harga <strong>daging sapi</strong> relatif stabil di <strong>$5-$15 per kilogram</strong>. Produk pertanian seperti <strong>beras</strong> dan <strong>minyak kelapa sawit</strong> berkisar <strong>$500-$1.200 per ton</strong>, berkontribusi besar pada <strong>ketersediaan dan akses pangan dunia</strong>. Grafik area ini menampilkan perubahan harga yang berpengaruh besar terhadap kesejahteraan dan ketahanan pangan global.
+  </p>
+    <div id="food-category-toggle" class="flex flex-wrap justify-center gap-3 mb-4 mt-6">
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="seafood" aria-pressed="true">
+        Produk Laut
+      </button>
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="meat" aria-pressed="false">
+        Daging
+      </button>
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="rice_cereal" aria-pressed="false">
+        Bijian & Sereal
+      </button>
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="vegetable_oil" aria-pressed="false">
+        Minyak Nabati
+      </button>
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="legumes_protein" aria-pressed="false">
+        Kacang-kacangan & Protein Nabati
+      </button>
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="sugar_sweeteners" aria-pressed="false">
+        Gula & Pemanis
+      </button>
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="coffee_tea" aria-pressed="false">
+        Kopi & Teh
+      </button>
+      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="others" aria-pressed="false">
+        Komoditas Lainnya
+      </button>
+    </div>
+  </section>
+
+  <div id="chart-food" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-20 max-w-full" style="width: 100%; max-width: 960px;">
+    <svg class="w-full h-[450px] select-none"></svg>
+    <div id="tooltip-food" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+  </div>
+
+  <section class="mb-20 max-w-xl mx-auto" id="conclusion-text">
+  <h2 class="text-2xl font-semibold mb-4 text-center">
+    Kesimpulan
+  </h2>
+  <p style="text-align: justify; line-height: 1.6; font-size: 16px; color: #333;">
+    Pergerakan harga komoditas energi, logam, dan pangan dalam dua dekade terakhir mencerminkan ketidakpastian dan dinamika pasar global yang kompleks. Fluktuasi harga energi dipengaruhi oleh krisis ekonomi dan geopolitik, sementara tren harga logam dan pupuk mencerminkan kebutuhan industri dan pertanian yang terus berkembang. Produk pangan menunjukkan variasi harga yang berdampak langsung pada ketahanan dan kesejahteraan masyarakat. Memahami pola ini menjadi kunci untuk mengembangkan strategi yang adaptif dan berkelanjutan dalam menghadapi tantangan ekonomi dan lingkungan global.
+  </p>
+</section>
+  
 <script>
-  // Path to your CSV file
-  const csvUrl = 'Selected_International_Commodity_Prices_data.csv'; // Place your CSV in same folder for GitHub Pages
+  const margin = {top: 50, right: 130, bottom: 70, left: 120};
+  const width = 960 - margin.left - margin.right;
+  const height = 450 - margin.top - margin.bottom;
+  const yearsRange = d3.range(2005, 2025);
+  let allData = [];
 
-  let rawData = [];
-  let chart = null;
+  function getUnitByCommodity(commodity) {
+    const crudeOilCommodities = ['CRUDE_WTI', 'CRUDE_BRENT', 'CRUDE_DUBAI']; // barrel
+    const gasCommodities = ['iNATGAS', 'NGAS_US', 'NGAS_JP', 'NGAS_EUR']; // MMBtu
+    const coalCommodities = ['COAL_AUS', 'COAL_SAFRICA']; // USD/MT
+    const unitUSDMT = [
+      'ALUMINUM', 'COPPER', 'GOLD', 'LEAD', 'NICKEL',
+      'PLATINUM', 'SILVER', 'Tin', 'Zinc',
+      'IRON_ORE', 'DAP', 'PHOSROCK', 'POTASH', 'TSP', 'UREA_EE_BULK'
+    ]; // USD/MT
+    const unitUSDperKg = [
+      'SHRIMP_MEX', 'TUNA_SJCSI', 'TUNA_SJWPO', 'TUNA_YFCSI',
+      'TUNA_YFFEP', 'TUNA_YFWPO', 'BEEF',
+      'RICE_05', 'WHEAT_US_HRW', 'COCONUT_OIL', 'PALM_OIL', 'SOYBEAN_OIL'
+    ]; // USD/kg
 
-function parseDate(dateStr) {
-  if (!dateStr) return null;
-  // Format bisa bervariasi, coba regex sederhana:
-  if (/^\d{4}$/.test(dateStr)) {
-    return new Date(dateStr, 0, 1);
-  } else if (/^\d{6}$/.test(dateStr)) {
-    const year = dateStr.slice(0, 4);
-    const month = dateStr.slice(4, 6) - 1;
-    return new Date(year, month, 1);
-  } else if (/^\d{8}$/.test(dateStr)) {
-    // Format YYYYMMDD
-    const year = dateStr.slice(0,4);
-    const month = dateStr.slice(4,6) -1;
-    const day = dateStr.slice(6,8);
-    return new Date(year, month, day);
-  } else {
-    const d = new Date(dateStr);
-    return isNaN(d.getTime()) ? null : d;
+    if (crudeOilCommodities.includes(commodity)) return "USD/bbl";
+    if (gasCommodities.includes(commodity)) return "USD/MMBtu";
+    if (coalCommodities.includes(commodity)) return "USD/MT";
+    if (unitUSDMT.includes(commodity)) return "USD/MT";
+    if (unitUSDperKg.includes(commodity)) return "USD/kg";
+
+    return "USD";
   }
-}
 
-  function createButtons(commodities) {
-    const container = document.getElementById('buttonsContainer');
-    container.innerHTML = '';
-    commodities.forEach((commodity, idx) => {
-      const btn = document.createElement('button');
-      btn.textContent = commodity;
-      btn.className = 'btn';
-      if(idx === 0) btn.classList.add('active');
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        updateChartForCommodity(commodity);
+  function getYAxisLabel(category) {
+    switch (category) {
+      case "oil":
+        return "Harga Rata-rata (USD per barrel)";
+      case "gas":
+        return "Harga Rata-rata (USD per MMBtu)";
+      case "coal":
+        return "Harga Rata-rata (USD per Metric Ton)";
+      default:
+        return "Harga Rata-rata (USD)";
+    }
+  }
+
+  // Insight 1: Energi
+  const oilCommodities = ["CRUDE_WTI", "CRUDE_BRENT", "CRUDE_DUBAI"];
+  const gasCommodities = ["iNATGAS", "NGAS_US", "NGAS_JP", "NGAS_EUR"];
+  const coalCommodities = ["COAL_AUS", "COAL_SAFRICA"];
+
+  function drawLineChartEnergy(containerId, tooltipId, commoditiesToPlot, category = "oil") {
+    const container = d3.select(containerId);
+    const svg = container.select("svg");
+    svg.selectAll("*").remove();
+    const tooltip = d3.select(tooltipId);
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const filtered = allData.filter(d =>
+      d.Category === "Energi" &&
+      commoditiesToPlot.includes(d.COMMODITY) &&
+      yearsRange.includes(+d.TIME_PERIOD.split("-")[0])
+    );
+
+    const grouped = {};
+    filtered.forEach(d => {
+      const comm = d.COMMODITY.trim();
+      const year = +d.TIME_PERIOD.split("-")[0];
+      const val = +d.OBS_VALUE;
+      if (!grouped[comm]) grouped[comm] = {};
+      if (!grouped[comm][year]) grouped[comm][year] = [];
+      grouped[comm][year].push(val);
+    });
+
+    const commodities = Object.keys(grouped);
+
+    const processed = {};
+    commodities.forEach(comm => {
+      processed[comm] = yearsRange.map(year => {
+        const vals = grouped[comm][year] || [];
+        return { year, value: vals.length ? d3.mean(vals) : 0 };
       });
-      container.appendChild(btn);
+    });
+
+    const maxY = d3.max(commodities, comm => d3.max(processed[comm], d => d.value));
+
+    const xScale = d3.scaleLinear()
+      .domain([yearsRange[0], yearsRange[yearsRange.length - 1]])
+      .range([0, width]);
+
+    const yScale = d3.scaleLinear()
+      .domain([0, maxY * 1.1])
+      .range([height, 0]);
+
+    const yAxis = d3.axisLeft(yScale);
+    const xAxis = d3.axisBottom(xScale).ticks(10).tickFormat(d3.format("d"));
+
+    g.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(xAxis);
+
+    g.append("g")
+      .call(yAxis);
+
+    g.append("text")
+      .attr("x", width / 2)
+      .attr("y", height + 45)
+      .attr("text-anchor", "middle")
+      .attr("class", "text-gray-700 font-semibold")
+      .text("Tahun");
+
+    g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -50)
+      .attr("text-anchor", "middle")
+      .attr("class", "text-gray-700 font-semibold")
+      .text(getYAxisLabel(category));
+
+    const colorScale = d3.scaleOrdinal()
+      .domain(commodities)
+      .range(d3.schemeTableau10.concat(d3.schemeSet3).slice(0, commodities.length));
+
+    const lineGen = d3.line()
+      .x(d => xScale(d.year))
+      .y(d => yScale(d.value))
+      .curve(d3.curveMonotoneX);
+
+    commodities.forEach(comm => {
+      g.append("path")
+        .datum(processed[comm])
+        .attr("fill", "none")
+        .attr("stroke", colorScale(comm))
+        .attr("stroke-width", 3)
+        .attr("d", lineGen);
+
+      g.selectAll(`.point-${comm}`)
+        .data(processed[comm])
+        .enter()
+        .append("circle")
+        .attr("class", `point-${comm}`)
+        .attr("cx", d => xScale(d.year))
+        .attr("cy", d => yScale(d.value))
+        .attr("r", 7)
+        .attr("fill", colorScale(comm))
+        .attr("opacity", 0.8)
+        .on("mousemove", (event, d) => {
+          const [x, y] = d3.pointer(event);
+          const unit = getUnitByCommodity(comm);
+          tooltip.style("visibility", "visible")
+            .html(`<strong>${comm.replace(/_/g, " ")}</strong><br>Tahun: ${d.year}<br>Harga: ${d.value.toFixed(2)} ${unit}`)
+            .style("left", (x + margin.left + 15) + "px")
+            .style("top", (y + margin.top - 30) + "px");
+        })
+        .on("mouseout", () => tooltip.style("visibility", "hidden"));
+
+      const lastPoint = processed[comm][processed[comm].length - 1];
+      g.append("text")
+        .attr("x", xScale(lastPoint.year) + 10)
+        .attr("y", yScale(lastPoint.value))
+        .attr("fill", colorScale(comm))
+        .attr("font-weight", "600")
+        .attr("alignment-baseline", "middle")
+        .text(comm.replace(/_/g, " "));
     });
   }
 
- function updateChartForCommodity(commodity) {
-  const filtered = rawData.filter(d => d.COMMODITY === commodity);
+  // Insight 2: Logam, Bahan Bangunan, Pupuk
+  const preciousMetalCommodities = ["GOLD", "PLATINUM", "SILVER"];
+  const industrialMetalCommodities = ["ALUMINUM", "COPPER", "LEAD", "NICKEL", "Tin", "Zinc", "IRON_ORE"];
+  const fertilizerCommodities = ["DAP", "PHOSROCK", "POTASH", "TSP", "UREA_EE_BULK"];
 
-  // Log sample data for debug
-  console.log(`Updating chart for commodity: ${commodity}`);
-  console.log(filtered.slice(0,5));
+  function drawHeatmapCategory(containerId, tooltipId, selectedCategory) {
+    const container = d3.select(containerId);
+    const svg = container.select("svg");
+    svg.selectAll("*").remove();
+    const tooltip = d3.select(tooltipId);
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const indicators = [...new Set(filtered.map(d => d.INDICATOR).filter(Boolean))];
+    let selectedCommodities = [];
+    switch (selectedCategory) {
+      case "precious_metal":
+        selectedCommodities = preciousMetalCommodities;
+        break;
+      case "industrial_metal":
+        selectedCommodities = industrialMetalCommodities;
+        break;
+      case "fertilizer":
+        selectedCommodities = fertilizerCommodities;
+        break;
+    }
 
-  const datasets = indicators.map((indicator, i) => {
-    const dataPoints = filtered
-      .filter(d => d.INDICATOR === indicator)
-      .map(d => {
-        const x = parseDate(d.TIME_PERIOD);
-        const y = parseFloat(d.OBS_VALUE);
-        return (x && !isNaN(y)) ? {x, y} : null;
+    const filtered = allData.filter(d =>
+      selectedCommodities.includes(d.COMMODITY) &&
+      yearsRange.includes(+d.TIME_PERIOD.split("-")[0])
+    );
+
+    const grouped = {};
+    filtered.forEach(d => {
+      const comm = d.COMMODITY.trim();
+      const year = +d.TIME_PERIOD.split("-")[0];
+      const val = +d.OBS_VALUE;
+      if (!grouped[comm]) grouped[comm] = {};
+      if (!grouped[comm][year]) grouped[comm][year] = [];
+      grouped[comm][year].push(val);
+    });
+
+    const heatmapData = [];
+    Object.keys(grouped).forEach(comm => {
+      yearsRange.forEach(year => {
+        const vals = grouped[comm][year] || [];
+        heatmapData.push({
+          comm,
+          year,
+          value: vals.length ? d3.mean(vals) : 0
+        });
+      });
+    });
+
+    const xScale = d3.scaleBand()
+      .domain(yearsRange)
+      .range([0, width])
+      .padding(0.05);
+
+    const yScale = d3.scaleBand()
+      .domain(Object.keys(grouped))
+      .range([0, height])
+      .padding(0.05);
+
+    const maxVal = d3.max(heatmapData, d => d.value);
+    const colorScale = d3.scaleSequential()
+      .domain([0, maxVal || 1])
+      .interpolator(d3.interpolateYlOrRd);
+
+    g.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(xScale).tickValues(yearsRange.filter(y => y % 2 === 0)))
+      .selectAll("text")
+      .attr("transform", "rotate(-45)")
+      .style("text-anchor", "end");
+
+    g.append("g")
+      .call(d3.axisLeft(yScale));
+
+    g.append("text")
+      .attr("x", width / 2)
+      .attr("y", height + 60)
+      .attr("text-anchor", "middle")
+      .text("Tahun");
+
+    g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -margin.left + 30)
+      .attr("text-anchor", "middle")
+      .text("Komoditas");
+
+    g.selectAll(".cell")
+      .data(heatmapData)
+      .enter()
+      .append("rect")
+      .attr("class", "cell")
+      .attr("x", d => xScale(d.year))
+      .attr("y", d => yScale(d.comm))
+      .attr("width", xScale.bandwidth())
+      .attr("height", yScale.bandwidth())
+      .attr("fill", d => colorScale(d.value))
+      .on("mousemove", (event, d) => {
+        const containerPos = document.getElementById(containerId.substring(1)).getBoundingClientRect();
+        const offsetX = event.clientX - containerPos.left;
+        const offsetY = event.clientY - containerPos.top;
+
+        const unit = getUnitByCommodity(d.comm);
+        tooltip.style("visibility", "visible")
+          .html(`<strong>${d.comm.replace(/_/g, " ")}</strong><br>Tahun: ${d.year}<br>Harga: ${d.value.toFixed(2)} ${unit}`)
+          .style("top", (offsetY + 15) + "px")
+          .style("left", (offsetX + 15) + "px");
       })
-      .filter(p => p !== null)
-      .sort((a,b) => a.x - b.x);
+      .on("mouseout", () => tooltip.style("visibility", "hidden"));
+  }
 
-    console.log(`Indicator: ${indicator}, points:`, dataPoints.length);
+  // Insight 3: Produk Laut, Daging, Pertanian
+  const seafoodCommodities = ['SHRIMP_MEX', 'TUNA_SJCSI', 'TUNA_SJWPO', 'TUNA_YFCSI', 'TUNA_YFFEP', 'TUNA_YFWPO'];
+  const meatCommodities = ['BEEF'];
+  const riceCerealCommodities = ['RICE_05', 'RICE_05_VNM', 'RICE_25', 'RICE_A1', 'WHEAT_US_HRW', 'WHEAT_US_SRW'];
+  const vegetableOilCommodities = ['COCONUT_OIL', 'PALM_OIL', 'PLMKRNL_OIL', 'SOYBEAN_OIL', 'GRNUT_OIL'];
+  const legumesProteinCommodities = ['GRNUT', 'SOYBEANS', 'SOYBEAN_MEAL'];
+  const sugarSweetenersCommodities = ['SUGAR_EU', 'SUGAR_US', 'SUGAR_WLD'];
+  const coffeeTeaCommodities = ['COFFEE_ARABIC', 'COFFEE_ROBUS', 'TEA_AVG', 'TEA_COLOMBO', 'TEA_KOLKATA', 'TEA_MOMBASA'];
+  const othersCommodities = ['COCOA'];
 
-    const color = `hsl(${(i * 80) % 360}, 70%, 50%)`;
-    return {
-      label: indicator,
-      data: dataPoints,
-      borderColor: color,
-      backgroundColor: color,
-      fill: false,
-      tension: 0.2,
-      pointRadius: 4,
-      pointHoverRadius: 6,
-    };
-  });
+  function drawAreaChartFood(containerId, tooltipId, commodities) {
+    const container = d3.select(containerId);
+    const svg = container.select("svg");
+    svg.selectAll("*").remove();
+    const tooltip = d3.select(tooltipId);
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-  if(chart) chart.destroy();
+    const filtered = allData.filter(d =>
+      commodities.includes(d.COMMODITY)
+      && yearsRange.includes(+d.TIME_PERIOD.split("-")[0])
+      && +d.OBS_VALUE >= 0
+    );
 
-  const ctx = document.getElementById('priceChart').getContext('2d');
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: { datasets },
-    options: {
-      responsive: true,
-      animation: { duration: 500 },
-      parsing: false,
-      normalized: true,
-      scales: {
-        x: {
-          type: 'time',
-          time: {
-            tooltipFormat: 'MMM yyyy',
-            unit: 'month',
-            displayFormats: { month: 'MMM yyyy' }
-          },
-          title: { display: true, text: 'Time Period' }
-        },
-        y: {
-          title: { display: true, text: 'Observation Value' },
-          beginAtZero: false
-        }
-      },
-      plugins: {
-        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } },
-        tooltip: { mode: 'nearest', intersect: false }
+    if (filtered.length === 0) {
+      g.append("text")
+        .attr("x", width / 2)
+        .attr("y", height / 2)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#888")
+        .text(`Data untuk kategori ini tidak tersedia.`);
+      return;
+    }
+
+    const grouped = {};
+    filtered.forEach(d => {
+      const comm = d.COMMODITY.trim();
+      const year = +d.TIME_PERIOD.split("-")[0];
+      const val = +d.OBS_VALUE;
+      if (!grouped[comm]) grouped[comm] = {};
+      if (!grouped[comm][year]) grouped[comm][year] = [];
+      grouped[comm][year].push(val);
+    });
+
+    const commoditiesKeys = Object.keys(grouped);
+
+    const processed = {};
+    commoditiesKeys.forEach(comm => {
+      processed[comm] = yearsRange.map(year => {
+        const vals = grouped[comm][year] || [];
+        return { year, value: vals.length ? d3.mean(vals) : 0 };
+      });
+    });
+
+    let maxY = d3.max(commoditiesKeys, comm => d3.max(processed[comm], d => d.value));
+    maxY = maxY < 1 ? 1 : maxY;
+
+    const xScale = d3.scaleLinear()
+      .domain([yearsRange[0], yearsRange[yearsRange.length - 1]])
+      .range([0, width]);
+    const yScale = d3.scaleLinear()
+      .domain([0, maxY * 1.1])
+      .range([height, 0]);
+
+    const xStep = 40;
+    const yStep = 30;
+    const numCols = Math.floor(width / xStep);
+    const numRows = Math.floor(height / yStep);
+
+    for (let i = 0; i <= numCols; i++) {
+      for (let j = 0; j <= numRows; j++) {
+        g.append("circle")
+          .attr("cx", i * xStep)
+          .attr("cy", j * yStep)
+          .attr("r", 2)
+          .attr("fill", "#d1d5db")
+          .attr("opacity", 0.4);
       }
     }
-  });
-}
 
+    g.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(xScale).ticks(10).tickFormat(d3.format("d")));
 
-  function initialize() {
-    Papa.parse(csvUrl, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function(results) {
-        rawData = results.data;
-        const commodities = [...new Set(rawData.map(d => d.COMMODITY).filter(Boolean))].sort();
-        createButtons(commodities);
-        if (commodities.length > 0) {
-          updateChartForCommodity(commodities[0]);
-        }
-      },
-      error: function(err) {
-        alert('Failed to load CSV data: ' + err.message);
-      }
+    g.append("g")
+      .call(d3.axisLeft(yScale));
+
+    g.append("text")
+      .attr("x", width / 2)
+      .attr("y", height + 45)
+      .attr("text-anchor", "middle")
+      .attr("class", "text-gray-700 font-semibold")
+      .text("Tahun");
+
+    g.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -50)
+      .attr("text-anchor", "middle")
+      .attr("class", "text-gray-700 font-semibold")
+      .text("Harga Rata-rata (USD)");
+
+    commoditiesKeys.sort((a, b) => {
+      const lastA = processed[a][processed[a].length - 1].value;
+      const lastB = processed[b][processed[b].length - 1].value;
+      return lastB - lastA;
+    });
+
+    const colorScale = d3.scaleOrdinal()
+      .domain(commoditiesKeys)
+      .range(d3.schemeTableau10.concat(d3.schemeSet3).slice(0, commoditiesKeys.length));
+
+    const areaGen = d3.area()
+      .x(d => xScale(d.year))
+      .y0(yScale(0))
+      .y1(d => yScale(d.value))
+      .curve(d3.curveMonotoneX);
+
+    commoditiesKeys.forEach(comm => {
+      g.append("path")
+        .datum(processed[comm])
+        .attr("fill", colorScale(comm))
+        .attr("fill-opacity", 0.3)
+        .attr("stroke", colorScale(comm))
+        .attr("stroke-width", 2)
+        .attr("d", areaGen);
+
+      g.selectAll(`.point-${comm}`)
+        .data(processed[comm])
+        .enter()
+        .append("circle")
+        .attr("class", `point-${comm}`)
+        .attr("cx", d => xScale(d.year))
+        .attr("cy", d => yScale(d.value))
+        .attr("r", 6)
+        .attr("fill", colorScale(comm))
+        .attr("opacity", 0.7)
+        .on("mousemove", (event, d) => {
+          const [x, y] = d3.pointer(event);
+          const unit = getUnitByCommodity(comm);
+          tooltip.style("visibility", "visible")
+            .html(`<strong>${comm}</strong><br>Tahun: ${d.year}<br>Harga: ${d.value.toFixed(2)} ${unit}`)
+            .style("left", (x + margin.left + 15) + "px")
+            .style("top", (y + margin.top - 30) + "px");
+        })
+        .on("mouseout", () => tooltip.style("visibility", "hidden"));
+
+      const lastPoint = processed[comm][processed[comm].length - 1];
+      g.append("text")
+        .attr("x", xScale(lastPoint.year) + 10)
+        .attr("y", yScale(lastPoint.value))
+        .attr("fill", colorScale(comm))
+        .attr("font-weight", "600")
+        .attr("alignment-baseline", "middle")
+        .text(comm);
     });
   }
 
-  window.onload = initialize;
+  // Event listeners untuk tombol Insight 1 Energi
+  const energyButtons = document.querySelectorAll(".energy-btn");
+  energyButtons.forEach(btn => {
+    if (btn.dataset.commodity === "oil") {
+      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
+      btn.setAttribute("aria-pressed", "true");
+    } else {
+      btn.classList.remove("bg-blue-900", "text-white", "border-blue-900");
+      btn.setAttribute("aria-pressed", "false");
+    }
+
+    btn.addEventListener("click", () => {
+      energyButtons.forEach(b => {
+        b.classList.remove("bg-blue-900", "text-white", "border-blue-900");
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
+      btn.setAttribute("aria-pressed", "true");
+
+      if (btn.dataset.commodity === "oil") {
+        drawLineChartEnergy("#chart-energy", "#tooltip-energy", oilCommodities, "oil");
+      } else if (btn.dataset.commodity === "gas") {
+        drawLineChartEnergy("#chart-energy", "#tooltip-energy", gasCommodities, "gas");
+      } else {
+        drawLineChartEnergy("#chart-energy", "#tooltip-energy", coalCommodities, "coal");
+      }
+    });
+  });
+
+  // Event listeners untuk tombol Insight 2 Logam, Bahan Bangunan, Pupuk
+ const categoryButtons = document.querySelectorAll(".category-filter-btn");
+categoryButtons.forEach((btn, idx) => {
+  if (idx === 0) { // tombol pertama aktif
+    btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
+    btn.setAttribute("aria-pressed", "true");
+  } else {
+    btn.classList.remove("bg-blue-900", "text-white", "border-blue-900");
+    btn.setAttribute("aria-pressed", "false");
+  }
+  btn.addEventListener("click", () => {
+    categoryButtons.forEach(b => {
+      b.classList.remove("bg-blue-900", "text-white", "border-blue-900");
+      b.setAttribute("aria-pressed", "false");
+    });
+    btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
+    btn.setAttribute("aria-pressed", "true");
+
+    drawHeatmapCategory("#chart-category-heatmap", "#tooltip-category-heatmap", btn.dataset.category);
+  });
+});
+
+  // Event listeners untuk tombol Insight 3 Produk Laut, Daging, Pertanian
+ const foodCategoryButtons = document.querySelectorAll(".food-category-btn");
+foodCategoryButtons.forEach((btn, idx) => {
+  if (idx === 0) { // tombol pertama aktif
+    btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
+    btn.setAttribute("aria-pressed", "true");
+  } else {
+    btn.classList.remove("bg-blue-900", "text-white", "border-blue-900");
+    btn.setAttribute("aria-pressed", "false");
+  }
+  btn.addEventListener("click", () => {
+    foodCategoryButtons.forEach(b => {
+      b.classList.remove("bg-blue-900", "text-white", "border-blue-900");
+      b.setAttribute("aria-pressed", "false");
+    });
+    btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
+    btn.setAttribute("aria-pressed", "true");
+
+    let selectedCategory = btn.dataset.category;
+    let selectedCommodities;
+
+    switch(selectedCategory) {
+      case 'seafood':
+        selectedCommodities = seafoodCommodities;
+        break;
+      case 'meat':
+        selectedCommodities = meatCommodities;
+        break;
+      case 'rice_cereal':
+        selectedCommodities = riceCerealCommodities;
+        break;
+      case 'vegetable_oil':
+        selectedCommodities = vegetableOilCommodities;
+        break;
+      case 'legumes_protein':
+        selectedCommodities = legumesProteinCommodities;
+        break;
+      case 'sugar_sweeteners':
+        selectedCommodities = sugarSweetenersCommodities;
+        break;
+      case 'coffee_tea':
+        selectedCommodities = coffeeTeaCommodities;
+        break;
+      case 'others':
+        selectedCommodities = othersCommodities;
+        break;
+    }
+
+    drawAreaChartFood("#chart-food", "#tooltip-food", selectedCommodities);
+  });
+});
+
+  // Load data dan tampilkan default Insight 1 dan Insight 3
+  d3.csv("Selected_International_Commodity_Prices_with_Category.csv").then(data => {
+    allData = data;
+
+    // Default tampil Insight 1 - Minyak & Gas
+    drawLineChartEnergy("#chart-energy", "#tooltip-energy", oilCommodities, "oil");
+
+    // Default tampil Insight 2 - Logam Mulia
+    drawHeatmapCategory("#chart-category-heatmap", "#tooltip-category-heatmap", "precious_metal");
+
+    // Default tampil Insight 3 - Produk Laut
+    drawAreaChartFood("#chart-food", "#tooltip-food", seafoodCommodities);
+  });
+
 </script>
+
+<style>
+  .energy-btn.active,
+  .food-category-btn.active,
+  .metal-filter-btn.active {
+    @apply bg-blue-900 text-white border-blue-900;
+  }
+</style>
 
 </body>
 </html>
