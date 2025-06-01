@@ -1,5 +1,5 @@
   const margin = {top: 50, right: 130, bottom: 70, left: 120};
-  const width = 960 - margin.left - margin.right;
+  const width = 835 - margin.left - margin.right;
   const height = 450 - margin.top - margin.bottom;
   const yearsRange = d3.range(2005, 2025);
   let allData = [];

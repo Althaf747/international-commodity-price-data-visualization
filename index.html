@@ -7,48 +7,43 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
-<body class="max-w-5xl mx-auto pt-12 text-gray-900 font-sans "
-  style="background-image: url('images/bg.avif'); 
-         background-size: cover; 
-         background-repeat: no-repeat; 
-         background-position: center;">
+<body 
+  class="min-h-screen bg-cover bg-center bg-no-repeat" 
+  style="background-image: url('images/bg.avif');">
 
-<style>
-  .energy-btn.active,
-  .food-category-btn.active,
-  .category-filter-btn.active {
-    @apply bg-blue-900 text-white border-blue-900;
-  }
-</style>
+  <!-- Container utama -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white/90 rounded-xl shadow-lg">
 
-  <div class="max-w-[1000px] mx-auto h-full shadow-2xl bg-gray-50 shadow-(color:rgba(0,0,0,0.7)) rounded-xl">
     <!-- Insight 1 -->
-    <section id="insight1-text">
-        <p class="uppercase text-sm pt-10 font-light tracking-widest text-center text-gray-600  ">
+    <section id="insight1-text" class="mb-16">
+      <p class="uppercase text-sm pt-10 font-light tracking-widest text-center text-gray-600 mb-4">
         Energy Price Fluctuations, Metal and Food Trends
-        </p>
-        <h1 class="text-5xl font-extrabold leading-tight text-center text-gray-900 ">
+      </p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight text-center text-gray-900 mb-6">
         Global Impact and<br>Sustainable Strategies
-        </h1>
-        <p class="text-xs font-semibold mt-2 text-center mb-8 opacity-50">
-        A project by <a href="https://github.com/Althaf747/" class="underline text-grey-500 hover:text-blue-800">Althaf</a>,
-        <a href="https://github.com/brianashari18" class="underline text-grey-500 hover:text-blue-800">Brian</a>, 
-        <a href="https://github.com/evlynnn" class="underline text-grey-500 hover:text-blue-800">Evelyn</a>, and
-        <a href="https://github.com/imeldamayanti" class="underline text-grey-500 hover:text-blue-800">Imelda</a>
-        <p class="text-sm mb-20 leading-relaxed max-w-xl mx-auto text-gray-700 text-center" style="line-height: 1.5;">
+      </h1>
+      <p class="text-xs font-semibold mt-2 text-center mb-8 opacity-50 max-w-xl mx-auto">
+        A project by 
+        <a href="https://github.com/Althaf747/" class="underline text-gray-500 hover:text-blue-800">Althaf</a>,
+        <a href="https://github.com/brianashari18" class="underline text-gray-500 hover:text-blue-800">Brian</a>, 
+        <a href="https://github.com/evlynnn" class="underline text-gray-500 hover:text-blue-800">Evelyn</a>, and
+        <a href="https://github.com/imeldamayanti" class="underline text-gray-500 hover:text-blue-800">Imelda</a>
+      </p>
+      <p class="text-sm mb-10 leading-relaxed max-w-xl mx-auto text-gray-700 text-center" style="line-height: 1.5;">
         The dynamics of energy, metal, and food commodity prices over the past two decades reflect global market volatility, geopolitical influences, and strategic needs to maintain industrial and food security worldwide.
-    </p>
-        <h2 class="text-xl font-extrabold leading-relaxed mb-5 text-center">    
+      </p>
+      <h2 class="text-xl font-extrabold leading-relaxed mb-5 text-center">
         Global Energy Price Fluctuations: Crisis, Spikes, and Recovery
-        </h2>
-        <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+      </h2>
+      <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
         Energy prices have experienced <strong>sharp fluctuations</strong> between 2005-2024.
         Oil prices surged to nearly <strong>100 USD/barrel</strong> in 2011-2012, dropped drastically to around <strong>30-40 USD</strong> in 2014-2016, 
-        then climbed back to approximately <strong>50-90 USD</strong> in 2022.<br><br> iNATGAS recorded extreme spikes over <strong>280 USD/MMBtu</strong> 
-        in 2021-2022, while coal prices from Australia and South Africa peaked above <strong>240 USD/ton</strong>. These fluctuations have major impacts on 
+        then climbed back to approximately <strong>50-90 USD</strong> in 2022.<br><br> 
+        iNATGAS recorded extreme spikes over <strong>280 USD/MMBtu</strong> in 2021-2022, while coal prices from Australia and South Africa peaked above <strong>240 USD/ton</strong>. These fluctuations have major impacts on 
         industrial costs and global energy strategies.
-        </p>
-        <div id="energy-toggle" class="flex justify-center space-x-3 mt-6 mb-6">
+      </p>
+
+      <div id="energy-toggle" class="flex justify-center flex-wrap gap-3 mt-6 mb-6">
         <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="oil" aria-pressed="true">
             Oil
         </button>
@@ -58,142 +53,139 @@
         <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="coal" aria-pressed="false">
             Coal
         </button>
-        </div>
-        <div id="chart-energy" class="relative rounded-lg mx-auto mb-2 max-w-full" style="width: 100%; max-width: 955px;  box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset; ">
-            <svg class="w-full h-[450px] select-none"></svg>
-        <div id="tooltip-energy" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
-        </div>
-    <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50">
-        Fig 1: Oil, Gas, and Coal price. 
-    </p>
+      </div>
 
-    <p class="text-gray-700 text-sm leading-7 mb-12 max-w-xl mx-auto text-justify">
-        The sharp energy price fluctuations, reflect global economic dependency on energy sources vulnerable to geopolitical and market changes. These shifts require adaptive energy policies
+      <div id="chart-energy" class="relative rounded-lg mx-auto mb-6 w-full max-w-full" 
+           style="box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset;">
+        <svg class="w-full h-[450px] sm:h-[450px] md:h-[450px] select-none"></svg>
+        <div id="tooltip-energy" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+      </div>
+
+      <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50 max-w-xl mx-auto">
+        Fig 1: Oil, Gas, and Coal price.
+      </p>
+
+      <p class="text-gray-700 text-sm leading-7 mb-12 max-w-xl mx-auto text-justify">
+        The sharp energy price fluctuations reflect global economic dependency on energy sources vulnerable to geopolitical and market changes. These shifts require adaptive energy policies
         to ensure industrial stability and overall economic resilience. This situation also directly affects manufacturing and agribusiness sectors, which 
         rely heavily on quality metal raw materials and mineral fertilizers.
-    </p>
+      </p>
     </section>
 
-  <!-- Insight 2 -->
-  <section id="insight2-text">
-    <h2 class="text-2xl font-extrabold mb-5 text-center">
-      Metal and Mineral Fertilizer Price Trends: <br>eflecting Industrial and Agricultural Needs
-    </h2>
-    <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
-      Key metals have experienced significant price <strong>fluctuations and increases</strong>, especially since 2020. These price movements highlight major pressures on manufacturing sectors that rely on quality metal raw materials.
-        Meanwhile, mineral fertilizers nearly <strong>doubled in price</strong> around 2008 and surged again in 2021-2022, reflecting increased demand in agribusiness. These fluctuations emphasize the importance of risk management 
-        to sustain business continuity and food production.
-    </p>
-    <div id="category-filter" class="flex justify-center gap-4 mb-4 max-w-xl mx-auto mt-6 flex-wrap">
-      <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="metals" aria-pressed="true">
-        Metals
-      </button>
-      <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="mineral_fertilizers" aria-pressed="false">
-        Mineral Fertilizers
-      </button>
-    </div>
+    <!-- Insight 2 -->
+    <section id="insight2-text" class="mb-16">
+      <h2 class="text-2xl font-extrabold mb-5 text-center">
+        Metal and Mineral Fertilizer Price Trends: <br>Reflecting Industrial and Agricultural Needs
+      </h2>
+      <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+        Key metals have experienced significant price <strong>fluctuations and increases</strong>, especially since 2020. These price movements highlight major pressures on manufacturing sectors that rely on quality metal raw materials.
+          Meanwhile, mineral fertilizers nearly <strong>doubled in price</strong> around 2008 and surged again in 2021-2022, reflecting increased demand in agribusiness. These fluctuations emphasize the importance of risk management 
+          to sustain business continuity and food production.
+      </p>
+      <div id="category-filter" class="flex justify-center flex-wrap gap-4 mb-4 max-w-xl mx-auto mt-6">
+        <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="metals" aria-pressed="true">
+          Metals
+        </button>
+        <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="mineral_fertilizers" aria-pressed="false">
+          Mineral Fertilizers
+        </button>
+      </div>
 
-    <div id="chart-category-heatmap" class="relative rounded-lg  mx-auto mb-2 max-w-full" style="width: 100%; max-width: 955px;  box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset;">
-    <svg class="w-full h-[465px] select-none"></svg>
-    <div id="tooltip-category-heatmap" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+      <div id="chart-category-heatmap" class="relative rounded-lg mx-auto mb-6 w-full max-w-full" 
+           style="box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset;">
+        <svg class="w-full h-[400px] sm:h-[465px] md:h-[465px] select-none"></svg>
+        <div id="tooltip-category-heatmap" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+      </div>
+
+      <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50 max-w-xl mx-auto">
+        Fig 2: Metals and Mineral Fertilizers Trends.
+      </p>
+
+      <p class="text-gray-700 text-sm leading-7 mb-12 max-w-xl mx-auto text-justify">
+        The price movements of metals and mineral fertilizers showing significant pressure on manufacturing and agriculture sectors reflect the essential material needs to
+         maintain global supply chains. These price fluctuations directly impact food production and industrial raw materials, making further changes in the food and natural
+          resource sectors unavoidable.
+      </p>
+    </section>
+
+    <!-- Insight 3 -->
+    <section id="insight3-text" class="mb-16">
+      <h2 class="text-2xl font-bold mb-5 text-center">
+        Food and Natural Resource Price Fluctuations:<br>Key to Global Resilience
+      </h2>
+      <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+        Prices of seafood vary with a stable upward trend. Beef prices rose from 2.5 USD/kg 
+        to over 5 USD/kg by 2024. Major agricultural products like <strong>peanuts</strong> peaked at 2,400 USD/ton and continue to rise. Plantations such as
+         <strong>Arabica coffee</strong> surged to 11 USD/kg. Vegetable oils and <strong>tobacco</strong> also experienced significant increases. Prices of processed 
+         products like <strong>fish meal</strong> remain stable. These fluctuations reveal challenges for food security and environmental sustainability
+          requiring adaptive strategies.
+      </p>
+      <div id="food-category-toggle" class="flex flex-wrap justify-center gap-3 mb-4 mt-6">
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="seafood" aria-pressed="true">
+          Seafood
+        </button>
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="animal_products" aria-pressed="false">
+          Animal Products
+        </button>
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="agriculture" aria-pressed="false">
+          Agriculture
+        </button>
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="plantations" aria-pressed="false">
+          Plantations
+        </button>
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="vegetable_oils" aria-pressed="false">
+          Vegetable Oils
+        </button>
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="non_food_agriculture" aria-pressed="false">
+          Non-Food Agriculture
+        </button>
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="processed_products" aria-pressed="false">
+          Processed Products
+        </button>
+        <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="timber" aria-pressed="false">
+          Timber
+        </button>
+      </div>
+      
+      <div id="chart-food" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-6 w-full max-w-full" 
+           style="box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset;">
+        <svg class="w-full h-[400px] sm:h-[450px] md:h-[450px] select-none"></svg>
+        <div id="tooltip-food" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+      </div>
+
+      <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50 max-w-xl mx-auto">
+        Fig 3: Food and Natural Resource Price Fluctuations.
+      </p>
+    </section>
+
+    <!-- Kesimpulan -->
+    <section class="mb-20 max-w-xl mx-auto" id="conclusion-text">
+      <h2 class="text-2xl font-bold mb-3 text-left pb-1" style="border-bottom: 2px solid rgba(0,0,0,0.2);">
+        Conclusion
+      </h2>
+      <p class="text-gray-700 text-sm leading-7 max-w-xl mx-auto text-justify">
+        The price movements of energy, metals, and food commodities over the past two decades demonstrate interconnected dynamics influenced by geopolitical, economic, and environmental factors. Sharp fluctuations in the energy sector place direct pressure on manufacturing and agribusiness, which in turn affect food security and the sustainability of natural resources. Understanding these patterns and inter-sector linkages is key to formulating adaptive and sustainable strategies to face evolving global challenges.
+      </p>
+    </section>
+
+    <!-- Material and Method -->
+    <section class="mb-20 max-w-xl mx-auto pb-12" id="material-method">
+      <h2 class="text-2xl font-bold mb-3 text-left pb-1" style="border-bottom: 2px solid rgba(0,0,0,0.2);">
+        Material and Method
+      </h2>
+      <p class="text-gray-700 text-sm leading-7 mb-2 max-w-xl mx-auto text-justify">
+        This project is built using plain HTML and <a href="https://d3js.org/" target="_blank" class="text-blue-600 underline">D3.js</a> for interactive data visualizations, styled with <a href="https://tailwindcss.com/" target="_blank" class="text-blue-600 underline">Tailwind CSS</a> for modern and responsive design. The source code is available on <a href="https://github.com/Althaf747/international-commodity-price-data-visualization" target="_blank" class="text-blue-600 underline">GitHub</a>.
+      </p>
+      <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+        The data is from the <a href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_COMMODITY_PRICES&df[ag]=SPC&df[vs]=1.0&dq=A..COMPRICE&pd=2012%2C&to[TIME_PERIOD]=false&ly[cl]=TIME_PERIOD&ly[rw]=COMMODITY%2CUNIT" target="_blank" class="text-blue-600 underline">Pacific Data Hub</a>
+      </p>
+      <p class="text-gray-700 text-sm leading-7 max-w-xl mx-auto text-justify">
+        This project was created as part of the <a href="https://pacificdatavizchallenge.org/" target="_blank" class="text-blue-600 underline">Pacific Data Challenge</a>.
+      </p>
+    </section>
+
   </div>
 
-  <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50">
-    Fig 2: Metals and Mineral Fertilizers Trends.
-  </p>
-
-  <p class="text-gray-700 text-sm leading-7 mb-12 max-w-xl mx-auto text-justify">
-    The price movements of metals and mineral fertilizers showing significant pressure on manufacturing and agriculture sectors reflect the essential material needs to
-     maintain global supply chains. These price fluctuations directly impact food production and industrial raw materials, making further changes in the food and natural
-      resource sectors unavoidable.
-  </p>
-
-  </section>
-
-
-  <!-- Insight 3 -->
-  <section id="insight3-text">
-    <h2 class="text-2xl font-bold mb-5 text-center">
-      Food and Natural Resource Price Fluctuations:<br>Key to Global Resilience
-    </h2>
-    <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
-      Prices of seafood vary with a stable upward trend. Beef prices rose from 2.5 USD/kg 
-      to over 5 USD/kg by 2024. Major agricultural products like <strong>peanuts</strong> peaked at 2,400 USD/ton and continue to rise. Plantations such as
-       <strong>Arabica coffee</strong> surged to 11 USD/kg. Vegetable oils and <strong>tobacco</strong> also experienced significant increases. Prices of processed 
-       products like <strong>fish meal</strong> remain stable. These fluctuations reveal challenges for food security and environmental sustainability
-        requiring adaptive strategies.
-    </p>
-    <div id="food-category-toggle" class="flex flex-wrap justify-center gap-3 mb-4 mt-6">
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="seafood" aria-pressed="true">
-        Seafood
-      </button>
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="animal_products" aria-pressed="false">
-        Animal Products
-      </button>
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="agriculture" aria-pressed="false">
-        Agriculture
-      </button>
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="plantations" aria-pressed="false">
-        Plantations
-      </button>
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="vegetable_oils" aria-pressed="false">
-        Vegetable Oils
-      </button>
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="non_food_agriculture" aria-pressed="false">
-        Non-Food Agriculture
-      </button>
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="processed_products" aria-pressed="false">
-        Processed Products
-      </button>
-      <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="timber" aria-pressed="false">
-        Timber
-      </button>
-    </div>
-    
-  <div id="chart-food" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-2 max-w-full" style="width: 100%; max-width: 955px;  box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset;;">
-    <svg class="w-full h-[450px] select-none"></svg>
-    <div id="tooltip-food" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
-  </div>
-
-  <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50">
-    Fig 3: Food and Natural Resource Price Fluctuations.
-  </p>
-
-  <p class="text-gray-700 text-sm leading-7  mb-12 max-w-xl mx-auto text-justify">
-    The diverse price dynamics of seafood, beef, agriculture, plantations, vegetable oils, and timber over the 
-    past two decades reveal the complexity of markets and inter-sector dependencies. Rising prices of food products 
-    and natural resources call for cross-industry collaboration and sustainable policies to ensure food security
-    and environmental preservation amid ongoing economic and climate challenges.
-  </p>
-  </section>
-
-
-  <section class="mb-20 max-w-xl mx-auto" id="conclusion-text">
-    <h2 class="text-2xl font-bold mb-3 text-left pb-1" style="border-bottom: 2px solid rgba(0,0,0,0.2);">
-      Conclusion
-    </h2>
-    <p class="text-gray-700 text-sm leading-7 max-w-xl mx-auto text-justify">
-      The price movements of energy, metals, and food commodities over the past two decades demonstrate interconnected dynamics influenced by geopolitical, economic, and environmental factors. Sharp fluctuations in the energy sector place direct pressure on manufacturing and agribusiness, which in turn affect food security and the sustainability of natural resources. Understanding these patterns and inter-sector linkages is key to formulating adaptive and sustainable strategies to face evolving global challenges.
-    </p>
-  </section>
-
-  <section class="mb-20 max-w-xl mx-auto pb-12" id="material-method">
-    <h2 class="text-2xl font-bold mb-3 text-left pb-1" style="border-bottom: 2px solid rgba(0,0,0,0.2);">
-      Material and Method
-    </h2>
-    <p class="text-gray-700 text-sm leading-7 mb-2 max-w-xl mx-auto text-justify">
-      This project is built using plain HTML and <a href="https://d3js.org/" target="_blank" class="text-blue-600 underline">D3.js</a> for interactive data visualizations, styled with <a href="https://tailwindcss.com/" target="_blank" class="text-blue-600 underline">Tailwind CSS</a> for modern and responsive design. The source code is available on <a href="https://github.com/Althaf747/international-commodity-price-data-visualization" target="_blank" class="text-blue-600 underline">GitHub</a>.
-    </p>
-    <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
-      The data is from the <a href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_COMMODITY_PRICES&df[ag]=SPC&df[vs]=1.0&dq=A..COMPRICE&pd=2012%2C&to[TIME_PERIOD]=false&ly[cl]=TIME_PERIOD&ly[rw]=COMMODITY%2CUNIT" target="_blank" class="text-blue-600 underline">Pacific Data Hub</a>
-    </p>
-    <p class="text-gray-700 text-sm leading-7 max-w-xl mx-auto text-justify">
-      This project was created as part of the <a href="https://pacificdatavizchallenge.org/" target="_blank" class="text-blue-600 underline">Pacific Data Challenge</a>.
-    </p>
-  </section>
-  </div>
-
-  <script src="script.js" ></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
