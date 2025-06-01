@@ -7,58 +7,78 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
-<body class="max-w-5xl mx-auto p-6 text-gray-900 font-sans">
+<body class="max-w-5xl mx-auto pt-12 text-gray-900 font-sans bg-gray-50">
 
-  <div class="max-w-xl mx-auto text-center mb-8">
-    <p class="uppercase text-sm font-light tracking-widest text-gray-500 mb-2">
-      Energy Price Fluctuations, Metal and Food Trends
+<style>
+  .energy-btn.active,
+  .food-category-btn.active,
+  .category-filter-btn.active {
+    @apply bg-blue-900 text-white border-blue-900;
+  }
+</style>
+
+  <div class="max-w-[1000px] mx-auto h-full shadow-2xl shadow-(color:rgba(0,0,0,0.5)) rounded-lg">
+    <!-- Insight 1 -->
+    <section id="insight1-text">
+        <p class="uppercase text-sm pt-10 font-light tracking-widest text-center text-gray-500 mb-2 ">
+        Energy Price Fluctuations, Metal and Food Trends
+        </p>
+        <h1 class="text-5xl font-extrabold leading-tight text-center text-gray-900 ">
+        Global Impact and<br>Sustainable Strategies
+        </h1>
+        <p class="text-xs font-semibold mt-2 text-center mb-8 opacity-50">
+        A project by <a href="https://github.com/Althaf747/" class="underline text-grey-500 hover:text-blue-800">Althaf</a>,
+        <a href="https://github.com/brianashari18" class="underline text-grey-500 hover:text-blue-800">Brian</a>, 
+        <a href="https://github.com/evlynnn" class="underline text-grey-500 hover:text-blue-800">Evelyn</a>, and
+        <a href="https://github.com/imeldamayanti" class="underline text-grey-500 hover:text-blue-800">Imelda</a>
+        <p class="text-sm mb-20 leading-relaxed max-w-xl mx-auto text-gray-700 text-center" style="line-height: 1.5;">
+        The dynamics of energy, metal, and food commodity prices over the past two decades reflect global market volatility, geopolitical influences, and strategic needs to maintain industrial and food security worldwide.
     </p>
-    <h1 class="text-5xl font-extrabold leading-tight text-gray-900">
-      Global Impact and Sustainable Strategies
-    </h1>
-  </div>
-
-  <p class="text-lg mb-6 leading-relaxed max-w-xl mx-auto text-gray-700" style="text-align: justify; line-height: 1.6; font-size: 18px;">
-    The dynamics of energy, metal, and food commodity prices over the past two decades reflect global market volatility, geopolitical influences, and strategic needs to maintain industrial and food security worldwide.
-  </p>
-
-  <!-- Insight 1 -->
-  <section class="mb-6 max-w-xl mx-auto" id="insight1-text">
-    <h2 class="text-2xl font-semibold mb-3 text-center">
-      Global Energy Price Fluctuations: Crisis, Spikes, and Recovery
-    </h2>
-    <p class="text-gray-700 text-base leading-relaxed mb-6 max-w-xl mx-auto text-justify">
-      Energy prices such as <strong>crude oil</strong>, <strong>gas</strong>, and <strong>coal</strong> have experienced sharp fluctuations between <strong>2005-2024</strong>. Oil prices surged to nearly <strong>110 USD per barrel</strong> in 2011-2012, dropped drastically to around <strong>30-40 USD</strong> in 2014-2016, then climbed back to approximately <strong>90-100 USD</strong> in 2022. <strong>iNATGAS</strong> recorded extreme spikes over <strong>280 USD per MMBtu</strong> in 2021-2022, while coal prices from Australia and South Africa peaked above <strong>350 USD per ton</strong>. These fluctuations have major impacts on industrial costs and global energy strategies.
+        <h2 class="text-xl font-extrabold leading-relaxed mb-5 text-center">    
+        Global Energy Price Fluctuations: Crisis, Spikes, and Recovery
+        </h2>
+        <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+        Energy prices have experienced <strong>sharp fluctuations</strong> between 2005-2024.
+        Oil prices surged to nearly <strong>100 USD/barrel</strong> in 2011-2012, dropped drastically to around <strong>30-40 USD</strong> in 2014-2016, 
+        then climbed back to approximately <strong>50-90 USD</strong> in 2022.<br><br> iNATGAS recorded extreme spikes over <strong>280 USD/MMBtu</strong> 
+        in 2021-2022, while coal prices from Australia and South Africa peaked above <strong>240 USD/ton</strong>. These fluctuations have major impacts on 
+        industrial costs and global energy strategies.
+        </p>
+        <div id="energy-toggle" class="flex justify-center space-x-3 mt-6 mb-6">
+        <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="oil" aria-pressed="true">
+            Oil
+        </button>
+        <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="gas" aria-pressed="false">
+            Gas
+        </button>
+        <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="coal" aria-pressed="false">
+            Coal
+        </button>
+        </div>
+        <div id="chart-energy" class="relative rounded-lg mx-auto mb-2 max-w-full" style="width: 100%; max-width: 955px;  box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset; ">
+            <svg class="w-full h-[450px] select-none"></svg>
+        <div id="tooltip-energy" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
+        </div>
+    <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50">
+        Fig 1: Oil, Gas, and Coal price. 
     </p>
-    <div id="energy-toggle" class="flex justify-center space-x-3 mt-6">
-      <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="oil" aria-pressed="true">
-        Oil
-      </button>
-      <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="gas" aria-pressed="false">
-        Gas
-      </button>
-      <button class="energy-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-commodity="coal" aria-pressed="false">
-        Coal
-      </button>
-    </div>
-  </section>
 
-  <div id="chart-energy" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-12 max-w-full" style="width: 100%; max-width: 960px;">
-    <svg class="w-full h-[450px] select-none"></svg>
-    <div id="tooltip-energy" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
-  </div>
-
-  <p class="text-gray-700 text-base leading-relaxed mb-12 max-w-xl mx-auto text-justify">
-    The sharp energy price fluctuations from 2005 to 2024, including oil price spikes near 110 USD per barrel and gas rising above 280 USD per MMBtu, reflect global economic dependency on energy sources vulnerable to geopolitical and market changes. These shifts require adaptive energy policies to ensure industrial stability and overall economic resilience. This situation also directly affects manufacturing and agribusiness sectors, which rely heavily on quality metal raw materials and mineral fertilizers.
-  </p>
+    <p class="text-gray-700 text-sm leading-7 mb-12 max-w-xl mx-auto text-justify">
+        The sharp energy price fluctuations, reflect global economic dependency on energy sources vulnerable to geopolitical and market changes. These shifts require adaptive energy policies
+        to ensure industrial stability and overall economic resilience. This situation also directly affects manufacturing and agribusiness sectors, which 
+        rely heavily on quality metal raw materials and mineral fertilizers.
+    </p>
+    </section>
 
   <!-- Insight 2 -->
-  <section class="mb-6 max-w-xl mx-auto" id="insight2-text">
-    <h2 class="text-2xl font-semibold mb-3 text-center">
-      Metal and Mineral Fertilizer Price Trends: Reflecting Industrial and Agricultural Needs
+  <section id="insight2-text">
+    <h2 class="text-2xl font-extrabold mb-5 text-center">
+      Metal and Mineral Fertilizer Price Trends: <br>eflecting Industrial and Agricultural Needs
     </h2>
-    <p class="text-gray-700 text-base leading-relaxed mb-6 max-w-xl mx-auto text-justify">
-      Key metals like <strong>aluminum</strong>, <strong>copper</strong>, and <strong>tin</strong> have experienced significant price fluctuations and increases, especially since <strong>2020</strong>. These price movements highlight major pressures on manufacturing sectors that rely on quality metal raw materials. Meanwhile, mineral fertilizers such as <strong>DAP</strong>, <strong>TSP</strong>, and <strong>UREA</strong> nearly doubled in price around <strong>2008</strong> and surged again in <strong>2021-2022</strong>, reflecting increased demand in agribusiness. These fluctuations emphasize the importance of risk management to sustain business continuity and food production.
+    <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+      Key metals have experienced significant price <strong>fluctuations and increases</strong>, especially since 2020. These price movements highlight major pressures on manufacturing sectors that rely on quality metal raw materials.
+        Meanwhile, mineral fertilizers nearly <strong>doubled in price</strong> around 2008 and surged again in 2021-2022, reflecting increased demand in agribusiness. These fluctuations emphasize the importance of risk management 
+        to sustain business continuity and food production.
     </p>
     <div id="category-filter" class="flex justify-center gap-4 mb-4 max-w-xl mx-auto mt-6 flex-wrap">
       <button class="category-filter-btn px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-200" data-category="metals" aria-pressed="true">
@@ -68,24 +88,36 @@
         Mineral Fertilizers
       </button>
     </div>
-  </section>
 
-  <div id="chart-category-heatmap" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-12 max-w-full" style="width: 100%; max-width: 960px;">
-    <svg class="w-full h-[450px] select-none"></svg>
+    <div id="chart-category-heatmap" class="relative rounded-lg  mx-auto mb-2 max-w-full" style="width: 100%; max-width: 955px;  box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset;">
+    <svg class="w-full h-[465px] select-none"></svg>
     <div id="tooltip-category-heatmap" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
   </div>
 
-  <p class="text-gray-700 text-base leading-relaxed mb-12 max-w-xl mx-auto text-justify">
-    The price movements of metals and mineral fertilizers showing significant pressure on manufacturing and agriculture sectors reflect the essential material needs to maintain global supply chains. These price fluctuations directly impact food production and industrial raw materials, making further changes in the food and natural resource sectors unavoidable.
+  <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50">
+    Fig 2: Metals and Mineral Fertilizers Trends.
   </p>
 
+  <p class="text-gray-700 text-sm leading-7 mb-12 max-w-xl mx-auto text-justify">
+    The price movements of metals and mineral fertilizers showing significant pressure on manufacturing and agriculture sectors reflect the essential material needs to
+     maintain global supply chains. These price fluctuations directly impact food production and industrial raw materials, making further changes in the food and natural
+      resource sectors unavoidable.
+  </p>
+
+  </section>
+
+
   <!-- Insight 3 -->
-  <section class="mb-6 max-w-xl mx-auto" id="insight3-text">
-    <h2 class="text-2xl font-semibold mb-3 text-center">
-      Food and Natural Resource Price Fluctuations: Key to Global Resilience
+  <section id="insight3-text">
+    <h2 class="text-2xl font-bold mb-5 text-center">
+      Food and Natural Resource Price Fluctuations:<br>Key to Global Resilience
     </h2>
-    <p class="text-gray-700 text-base leading-relaxed mb-6 max-w-xl mx-auto text-justify">
-      Prices of seafood such as <strong>tuna</strong> and <strong>shrimp</strong> vary with a stable upward trend. <strong>Beef</strong> prices rose from 2.5 USD/kg to over 6 USD/kg by 2024. Major agricultural products like <strong>peanuts</strong> peaked at 2,400 USD/ton and continue to rise. Plantations such as <strong>Arabica coffee</strong> surged to 11 USD/kg. Vegetable oils and <strong>tobacco</strong> also experienced significant increases. Prices of processed products like <strong>fish meal</strong> and timber remain stable. These fluctuations reveal challenges for food security and environmental sustainability requiring adaptive strategies.
+    <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+      Prices of seafood vary with a stable upward trend. Beef prices rose from 2.5 USD/kg 
+      to over 5 USD/kg by 2024. Major agricultural products like <strong>peanuts</strong> peaked at 2,400 USD/ton and continue to rise. Plantations such as
+       <strong>Arabica coffee</strong> surged to 11 USD/kg. Vegetable oils and <strong>tobacco</strong> also experienced significant increases. Prices of processed 
+       products like <strong>fish meal</strong> remain stable. These fluctuations reveal challenges for food security and environmental sustainability
+        requiring adaptive strategies.
     </p>
     <div id="food-category-toggle" class="flex flex-wrap justify-center gap-3 mb-4 mt-6">
       <button class="food-category-btn px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" data-category="seafood" aria-pressed="true">
@@ -113,630 +145,51 @@
         Timber
       </button>
     </div>
-  </section>
-
-  <div id="chart-food" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-20 max-w-full" style="width: 100%; max-width: 960px;">
+    
+  <div id="chart-food" class="relative border border-gray-300 rounded-lg bg-gray-50 mx-auto mb-2 max-w-full" style="width: 100%; max-width: 955px;  box-shadow:1px 1px 10px 5px rgba(0,0,0,0.2) inset;;">
     <svg class="w-full h-[450px] select-none"></svg>
     <div id="tooltip-food" class="absolute bg-white border border-gray-300 rounded-md p-2 text-sm shadow-lg pointer-events-none invisible z-20"></div>
   </div>
 
-  <p class="text-gray-700 text-base leading-relaxed mb-20 max-w-xl mx-auto text-justify">
-    The diverse price dynamics of seafood, beef, agriculture, plantations, vegetable oils, and timber over the past two decades reveal the complexity of markets and inter-sector dependencies. Rising prices of food products and natural resources call for cross-industry collaboration and sustainable policies to ensure food security and environmental preservation amid ongoing economic and climate challenges.
+  <p class="text-xs text-gray-600 mt-2 text-center mb-12 opacity-50">
+    Fig 3: Food and Natural Resource Price Fluctuations.
   </p>
 
+  <p class="text-gray-700 text-sm leading-7  mb-12 max-w-xl mx-auto text-justify">
+    The diverse price dynamics of seafood, beef, agriculture, plantations, vegetable oils, and timber over the 
+    past two decades reveal the complexity of markets and inter-sector dependencies. Rising prices of food products 
+    and natural resources call for cross-industry collaboration and sustainable policies to ensure food security
+    and environmental preservation amid ongoing economic and climate challenges.
+  </p>
+  </section>
+
+
   <section class="mb-20 max-w-xl mx-auto" id="conclusion-text">
-    <h2 class="text-2xl font-semibold mb-3 text-left">
+    <h2 class="text-2xl font-bold mb-3 text-left pb-1" style="border-bottom: 2px solid rgba(0,0,0,0.2);">
       Conclusion
     </h2>
-    <p class="text-gray-700 text-base leading-relaxed max-w-xl mx-auto text-justify">
+    <p class="text-gray-700 text-sm leading-7 max-w-xl mx-auto text-justify">
       The price movements of energy, metals, and food commodities over the past two decades demonstrate interconnected dynamics influenced by geopolitical, economic, and environmental factors. Sharp fluctuations in the energy sector place direct pressure on manufacturing and agribusiness, which in turn affect food security and the sustainability of natural resources. Understanding these patterns and inter-sector linkages is key to formulating adaptive and sustainable strategies to face evolving global challenges.
     </p>
   </section>
 
-  <section class="mb-20 max-w-xl mx-auto" id="material-method">
-    <h2 class="text-2xl font-semibold mb-3 text-left">
+  <section class="mb-20 max-w-xl mx-auto pb-12" id="material-method">
+    <h2 class="text-2xl font-bold mb-3 text-left pb-1" style="border-bottom: 2px solid rgba(0,0,0,0.2);">
       Material and Method
     </h2>
-    <p class="text-gray-700 text-base leading-relaxed mb-6 max-w-xl mx-auto text-justify">
-      This project is built using plain HTML and <a href="https://d3js.org/" target="_blank" class="text-blue-600 underline">D3.js</a> for interactive data visualizations, styled with <a href="https://tailwindcss.com/" target="_blank" class="text-blue-600 underline">Tailwind CSS</a> for modern and responsive design. The source code is available on <a href="https://github.com/" target="_blank" class="text-blue-600 underline">GitHub</a>.
+    <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+      This project is built using plain HTML and <a href="https://d3js.org/" target="_blank" class="text-blue-600 underline">D3.js</a> for interactive data visualizations, styled with <a href="https://tailwindcss.com/" target="_blank" class="text-blue-600 underline">Tailwind CSS</a> for modern and responsive design. The source code is available on <a href="https://github.com/Althaf747/international-commodity-price-data-visualization" target="_blank" class="text-blue-600 underline">GitHub</a>.
     </p>
-    <p class="text-gray-700 text-base leading-relaxed mb-6 max-w-xl mx-auto text-justify">
-      The data is sourced from the <a href="https://pacificdata.org/" target="_blank" class="text-blue-600 underline">Pacific Data Hub</a>, and the exact datasets are linked in the captions of each chart.
+    <p class="text-gray-700 text-sm leading-7 mb-6 max-w-xl mx-auto text-justify">
+      The data is sourced from the <a href="https://stats.pacificdata.org/vis?lc=en&df[ds]=SPC2&df[id]=DF_COMMODITY_PRICES&df[ag]=SPC&df[vs]=1.0&dq=A..COMPRICE&pd=2012%2C&to[TIME_PERIOD]=false&ly[cl]=TIME_PERIOD&ly[rw]=COMMODITY%2CUNIT" target="_blank" class="text-blue-600 underline">Pacific Data Hub</a>, and the exact datasets are linked in the captions of each chart.
     </p>
-    <p class="text-gray-700 text-base leading-relaxed max-w-xl mx-auto text-justify">
+    <p class="text-gray-700 text-sm leading-7 max-w-xl mx-auto text-justify">
       This project was created as part of the <a href="https://pacificdata.org/challenge" target="_blank" class="text-blue-600 underline">Pacific Data Challenge</a>.
     </p>
   </section>
+  </div>
 
-<script>
-  const margin = {top: 50, right: 130, bottom: 70, left: 120};
-  const width = 960 - margin.left - margin.right;
-  const height = 450 - margin.top - margin.bottom;
-  const yearsRange = d3.range(2005, 2025);
-  let allData = [];
-
-  // Commodity categories
-  const metalsCommodities = [
-    'ALUMINUM', 'COPPER', 'GOLD', 'LEAD', 'NICKEL',
-    'PLATINUM', 'SILVER', 'Tin', 'Zinc', 'IRON_ORE'
-  ];
-
-  const energyCommodities = [
-    'COAL_AUS', 'COAL_SAFRICA', 'CRUDE_BRENT', 'CRUDE_DUBAI',
-    'CRUDE_PETRO', 'CRUDE_WTI', 'iNATGAS', 'NGAS_EUR', 'NGAS_JP', 'NGAS_US'
-  ];
-
-  const agricultureCommodities = [
-    'BARLEY', 'COTTON_A_INDX', 'MAIZE', 'RICE_05', 'RICE_05_VNM',
-    'RICE_25', 'RICE_A1', 'SORGHUM', 'SOYBEAN_MEAL',
-    'SOYBEANS', 'WHEAT_US_HRW', 'WHEAT_US_SRW', 'GRNUT'
-  ];
-
-  const plantationsCommodities = [
-    'BANANA_EU', 'BANANA_US', 'COCOA', 'COFFEE_ARABIC',
-    'COFFEE_ROBUS', 'ORANGE', 'SUGAR_EU',
-    'SUGAR_US', 'SUGAR_WLD', 'TEA_AVG', 'TEA_COLOMBO', 'TEA_KOLKATA',
-    'TEA_MOMBASA'
-  ];
-
-  const vegetableOilsCommodities = [
-    'COCONUT_OIL', 'PALM_OIL', 'PLMKRNL_OIL', 'SOYBEAN_OIL', 'GRNUT_OIL'
-  ];
-
-  const nonFoodAgricultureCommodities = [
-    'TOBAC_US'
-  ];
-
-  const seafoodCommodities = [
-    'TUNA_SJCSI', 'TUNA_SJFEP', 'TUNA_SJWPO',
-    'TUNA_YFCSI', 'TUNA_YFFEP', 'TUNA_YFWPO', 'SHRIMP_MEX'
-  ];
-
-  const animalProductsCommodities = [
-    'BEEF'
-  ];
-
-  const processedProductsCommodities = [
-    'FISH_MEAL'
-  ];
-
-  const timberCommodities = [
-    'LOGS_CMR', 'LOGS_MYS', 'PLYWOOD', 'SAWNWD_CMR', 'SAWNWD_MYS'
-  ];
-
-  const mineralFertilizersCommodities = [
-    'DAP', 'PHOSROCK', 'POTASH', 'TSP', 'UREA_EE_BULK'
-  ];
-
-  // Unit function for tooltip
-  function getUnitByCommodity(commodity) {
-    const crudeOilCommodities = ['CRUDE_WTI', 'CRUDE_BRENT', 'CRUDE_DUBAI', 'CRUDE_PETRO'];
-    const gasCommodities = ['iNATGAS', 'NGAS_US', 'NGAS_JP', 'NGAS_EUR'];
-    const coalCommodities = ['COAL_AUS', 'COAL_SAFRICA'];
-    const unitUSDMT = [
-      'ALUMINUM', 'COPPER', 'GOLD', 'LEAD', 'NICKEL',
-      'PLATINUM', 'SILVER', 'Tin', 'Zinc', 'IRON_ORE',
-      'DAP', 'PHOSROCK', 'POTASH', 'TSP', 'UREA_EE_BULK'
-    ];
-    const unitUSDperKg = [
-      'SHRIMP_MEX', 'TUNA_SJCSI', 'TUNA_SJFEP', 'TUNA_SJWPO', 'TUNA_YFCSI',
-      'TUNA_YFFEP', 'TUNA_YFWPO', 'BEEF',
-      'RICE_05', 'RICE_05_VNM', 'RICE_25', 'RICE_A1', 'WHEAT_US_HRW', 'WHEAT_US_SRW',
-      'COCONUT_OIL', 'PALM_OIL', 'PLMKRNL_OIL', 'SOYBEAN_OIL', 'GRNUT_OIL'
-    ];
-
-    if (crudeOilCommodities.includes(commodity)) return "USD/bbl";
-    if (gasCommodities.includes(commodity)) return "USD/MMBtu";
-    if (coalCommodities.includes(commodity)) return "USD/MT";
-    if (unitUSDMT.includes(commodity)) return "USD/MT";
-    if (unitUSDperKg.includes(commodity)) return "USD/kg";
-
-    return "USD";
-  }
-
-  // Draw line chart for Energy
-  function drawLineChartEnergy(containerId, tooltipId, commoditiesToPlot, category = "oil") {
-    const container = d3.select(containerId);
-    const svg = container.select("svg");
-    svg.selectAll("*").remove();
-    const tooltip = d3.select(tooltipId);
-    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const filtered = allData.filter(d =>
-      d.Category === "Energi" &&
-      commoditiesToPlot.includes(d.COMMODITY) &&
-      yearsRange.includes(+d.TIME_PERIOD.split("-")[0])
-    );
-
-    const grouped = {};
-    filtered.forEach(d => {
-      const comm = d.COMMODITY.trim();
-      const year = +d.TIME_PERIOD.split("-")[0];
-      const val = +d.OBS_VALUE;
-      if (!grouped[comm]) grouped[comm] = {};
-      if (!grouped[comm][year]) grouped[comm][year] = [];
-      grouped[comm][year].push(val);
-    });
-
-    const commodities = Object.keys(grouped);
-
-    const processed = {};
-    commodities.forEach(comm => {
-      processed[comm] = yearsRange.map(year => {
-        const vals = grouped[comm][year] || [];
-        return { year, value: vals.length ? d3.mean(vals) : 0 };
-      });
-    });
-
-    const maxY = d3.max(commodities, comm => d3.max(processed[comm], d => d.value));
-
-    const xScale = d3.scaleLinear()
-      .domain([yearsRange[0], yearsRange[yearsRange.length - 1]])
-      .range([0, width]);
-
-    const yScale = d3.scaleLinear()
-      .domain([0, maxY * 1.1])
-      .range([height, 0]);
-
-    const yAxis = d3.axisLeft(yScale);
-    const xAxis = d3.axisBottom(xScale).ticks(10).tickFormat(d3.format("d"));
-
-    g.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(xAxis);
-
-    g.append("g")
-      .call(yAxis);
-
-    g.append("text")
-      .attr("x", width / 2)
-      .attr("y", height + 45)
-      .attr("text-anchor", "middle")
-      .attr("class", "text-gray-700 font-semibold")
-      .text(category === "oil" ? "Average Price (USD per barrel)" : category === "gas" ? "Average Price (USD per MMBtu)" : "Average Price (USD per Metric Ton)");
-
-    g.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("x", -height / 2)
-      .attr("y", -50)
-      .attr("text-anchor", "middle")
-      .attr("class", "text-gray-700 font-semibold")
-      .text(category === "oil" ? "Average Price (USD per barrel)" : category === "gas" ? "Average Price (USD per MMBtu)" : "Average Price (USD per Metric Ton)");
-
-    const colorScale = d3.scaleOrdinal()
-      .domain(commodities)
-      .range(d3.schemeTableau10.concat(d3.schemeSet3).slice(0, commodities.length));
-
-    const lineGen = d3.line()
-      .x(d => xScale(d.year))
-      .y(d => yScale(d.value))
-      .curve(d3.curveMonotoneX);
-
-    commodities.forEach(comm => {
-      g.append("path")
-        .datum(processed[comm])
-        .attr("fill", "none")
-        .attr("stroke", colorScale(comm))
-        .attr("stroke-width", 3)
-        .attr("d", lineGen);
-
-      g.selectAll(`.point-${comm}`)
-        .data(processed[comm])
-        .enter()
-        .append("circle")
-        .attr("class", `point-${comm}`)
-        .attr("cx", d => xScale(d.year))
-        .attr("cy", d => yScale(d.value))
-        .attr("r", 7)
-        .attr("fill", colorScale(comm))
-        .attr("opacity", 0.8)
-        .on("mousemove", (event, d) => {
-          const [x, y] = d3.pointer(event);
-          const unit = getUnitByCommodity(comm);
-          tooltip.style("visibility", "visible")
-            .html(`<strong>${comm.replace(/_/g, " ")}</strong><br>Year: ${d.year}<br>Price: ${d.value.toFixed(2)} ${unit}`)
-            .style("left", (x + margin.left + 15) + "px")
-            .style("top", (y + margin.top - 30) + "px");
-        })
-        .on("mouseout", () => tooltip.style("visibility", "hidden"));
-
-      const lastPoint = processed[comm][processed[comm].length - 1];
-      g.append("text")
-        .attr("x", xScale(lastPoint.year) + 10)
-        .attr("y", yScale(lastPoint.value))
-        .attr("fill", colorScale(comm))
-        .attr("font-weight", "600")
-        .attr("alignment-baseline", "middle")
-        .text(comm.replace(/_/g, " "));
-    });
-  }
-
-  // Draw heatmap for Metals and Fertilizers
-  function drawHeatmapCategory(containerId, tooltipId, selectedCommodities) {
-    const container = d3.select(containerId);
-    const svg = container.select("svg");
-    svg.selectAll("*").remove();
-    const tooltip = d3.select(tooltipId);
-    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const filtered = allData.filter(d =>
-      selectedCommodities.includes(d.COMMODITY) &&
-      yearsRange.includes(+d.TIME_PERIOD.split("-")[0])
-    );
-
-    const grouped = {};
-    filtered.forEach(d => {
-      const comm = d.COMMODITY.trim();
-      const year = +d.TIME_PERIOD.split("-")[0];
-      const val = +d.OBS_VALUE;
-      if (!grouped[comm]) grouped[comm] = {};
-      if (!grouped[comm][year]) grouped[comm][year] = [];
-      grouped[comm][year].push(val);
-    });
-
-    const heatmapData = [];
-    Object.keys(grouped).forEach(comm => {
-      yearsRange.forEach(year => {
-        const vals = grouped[comm][year] || [];
-        heatmapData.push({
-          comm,
-          year,
-          value: vals.length ? d3.mean(vals) : 0
-        });
-      });
-    });
-
-    const xScale = d3.scaleBand()
-      .domain(yearsRange)
-      .range([0, width])
-      .padding(0.05);
-
-    const yScale = d3.scaleBand()
-      .domain(Object.keys(grouped))
-      .range([0, height])
-      .padding(0.05);
-
-    const maxVal = d3.max(heatmapData, d => d.value);
-    const colorScale = d3.scaleSequential()
-      .domain([0, maxVal || 1])
-      .interpolator(d3.interpolateYlOrRd);
-
-    g.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(d3.axisBottom(xScale).tickValues(yearsRange.filter(y => y % 2 === 0)))
-      .selectAll("text")
-      .attr("transform", "rotate(-45)")
-      .style("text-anchor", "end");
-
-    g.append("g")
-      .call(d3.axisLeft(yScale));
-
-    g.append("text")
-      .attr("x", width / 2)
-      .attr("y", height + 60)
-      .attr("text-anchor", "middle")
-      .text("Year");
-
-    g.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("x", -height / 2)
-      .attr("y", -margin.left + 30)
-      .attr("text-anchor", "middle")
-      .text("Commodity");
-
-    g.selectAll(".cell")
-      .data(heatmapData)
-      .enter()
-      .append("rect")
-      .attr("class", "cell")
-      .attr("x", d => xScale(d.year))
-      .attr("y", d => yScale(d.comm))
-      .attr("width", xScale.bandwidth())
-      .attr("height", yScale.bandwidth())
-      .attr("fill", d => colorScale(d.value))
-      .on("mousemove", (event, d) => {
-        const containerPos = document.getElementById(containerId.substring(1)).getBoundingClientRect();
-        const offsetX = event.clientX - containerPos.left;
-        const offsetY = event.clientY - containerPos.top;
-
-        const unit = getUnitByCommodity(d.comm);
-        tooltip.style("visibility", "visible")
-          .html(`<strong>${d.comm.replace(/_/g, " ")}</strong><br>Year: ${d.year}<br>Price: ${d.value.toFixed(2)} ${unit}`)
-          .style("top", (offsetY + 15) + "px")
-          .style("left", (offsetX + 15) + "px");
-      })
-      .on("mouseout", () => tooltip.style("visibility", "hidden"));
-  }
-
-  // Draw area chart for Food and Related Commodities
-  function drawAreaChartFood(containerId, tooltipId, commodities) {
-    const container = d3.select(containerId);
-    const svg = container.select("svg");
-    svg.selectAll("*").remove();
-    const tooltip = d3.select(tooltipId);
-    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const filtered = allData.filter(d =>
-      commodities.includes(d.COMMODITY) &&
-      yearsRange.includes(+d.TIME_PERIOD.split("-")[0]) &&
-      +d.OBS_VALUE >= 0
-    );
-
-    if (filtered.length === 0) {
-      g.append("text")
-        .attr("x", width / 2)
-        .attr("y", height / 2)
-        .attr("text-anchor", "middle")
-        .attr("fill", "#888")
-        .text(`No data available for this category.`);
-      return;
-    }
-
-    const grouped = {};
-    filtered.forEach(d => {
-      const comm = d.COMMODITY.trim();
-      const year = +d.TIME_PERIOD.split("-")[0];
-      const val = +d.OBS_VALUE;
-      if (!grouped[comm]) grouped[comm] = {};
-      if (!grouped[comm][year]) grouped[comm][year] = [];
-      grouped[comm][year].push(val);
-    });
-
-    const commoditiesKeys = Object.keys(grouped);
-
-    const processed = {};
-    commoditiesKeys.forEach(comm => {
-      processed[comm] = yearsRange.map(year => {
-        const vals = grouped[comm][year] || [];
-        return { year, value: vals.length ? d3.mean(vals) : 0 };
-      });
-    });
-
-    let maxY = d3.max(commoditiesKeys, comm => d3.max(processed[comm], d => d.value));
-    maxY = maxY < 1 ? 1 : maxY;
-
-    const xScale = d3.scaleLinear()
-      .domain([yearsRange[0], yearsRange[yearsRange.length - 1]])
-      .range([0, width]);
-    const yScale = d3.scaleLinear()
-      .domain([0, maxY * 1.1])
-      .range([height, 0]);
-
-    const xStep = 40;
-    const yStep = 30;
-    const numCols = Math.floor(width / xStep);
-    const numRows = Math.floor(height / yStep);
-
-    for (let i = 0; i <= numCols; i++) {
-      for (let j = 0; j <= numRows; j++) {
-        g.append("circle")
-          .attr("cx", i * xStep)
-          .attr("cy", j * yStep)
-          .attr("r", 2)
-          .attr("fill", "#d1d5db")
-          .attr("opacity", 0.4);
-      }
-    }
-
-    g.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(d3.axisBottom(xScale).ticks(10).tickFormat(d3.format("d")));
-
-    g.append("g")
-      .call(d3.axisLeft(yScale));
-
-    g.append("text")
-      .attr("x", width / 2)
-      .attr("y", height + 45)
-      .attr("text-anchor", "middle")
-      .attr("class", "text-gray-700 font-semibold")
-      .text("Year");
-
-    g.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("x", -height / 2)
-      .attr("y", -50)
-      .attr("text-anchor", "middle")
-      .attr("class", "text-gray-700 font-semibold")
-      .text("Average Price (USD)");
-
-    commoditiesKeys.sort((a, b) => {
-      const lastA = processed[a][processed[a].length - 1].value;
-      const lastB = processed[b][processed[b].length - 1].value;
-      return lastB - lastA;
-    });
-
-    const colorScale = d3.scaleOrdinal()
-      .domain(commoditiesKeys)
-      .range(d3.schemeTableau10.concat(d3.schemeSet3).slice(0, commoditiesKeys.length));
-
-    const areaGen = d3.area()
-      .x(d => xScale(d.year))
-      .y0(yScale(0))
-      .y1(d => yScale(d.value))
-      .curve(d3.curveMonotoneX);
-
-    commoditiesKeys.forEach(comm => {
-      g.append("path")
-        .datum(processed[comm])
-        .attr("fill", colorScale(comm))
-        .attr("fill-opacity", 0.3)
-        .attr("stroke", colorScale(comm))
-        .attr("stroke-width", 2)
-        .attr("d", areaGen);
-
-      g.selectAll(`.point-${comm}`)
-        .data(processed[comm])
-        .enter()
-        .append("circle")
-        .attr("class", `point-${comm}`)
-        .attr("cx", d => xScale(d.year))
-        .attr("cy", d => yScale(d.value))
-        .attr("r", 6)
-        .attr("fill", colorScale(comm))
-        .attr("opacity", 0.7)
-        .on("mousemove", (event, d) => {
-          const [x, y] = d3.pointer(event);
-          const unit = getUnitByCommodity(comm);
-          tooltip.style("visibility", "visible")
-            .html(`<strong>${comm.replace(/_/g, " ")}</strong><br>Year: ${d.year}<br>Price: ${d.value.toFixed(2)} ${unit}`)
-            .style("left", (x + margin.left + 15) + "px")
-            .style("top", (y + margin.top - 30) + "px");
-        })
-        .on("mouseout", () => tooltip.style("visibility", "hidden"));
-
-      const lastPoint = processed[comm][processed[comm].length - 1];
-      g.append("text")
-        .attr("x", xScale(lastPoint.year) + 10)
-        .attr("y", yScale(lastPoint.value))
-        .attr("fill", colorScale(comm))
-        .attr("font-weight", "600")
-        .attr("alignment-baseline", "middle")
-        .text(comm.replace(/_/g, " "));
-    });
-  }
-
-  // Event listeners for Energy buttons
-  const energyButtons = document.querySelectorAll(".energy-btn");
-  energyButtons.forEach(btn => {
-    if (btn.dataset.commodity === "oil") {
-      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "true");
-    } else {
-      btn.classList.remove("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "false");
-    }
-
-    btn.addEventListener("click", () => {
-      energyButtons.forEach(b => {
-        b.classList.remove("bg-blue-900", "text-white", "border-blue-900");
-        b.setAttribute("aria-pressed", "false");
-      });
-      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "true");
-
-      if (btn.dataset.commodity === "oil") {
-        drawLineChartEnergy("#chart-energy", "#tooltip-energy", ['CRUDE_WTI', 'CRUDE_BRENT', 'CRUDE_DUBAI', 'CRUDE_PETRO'], "oil");
-      } else if (btn.dataset.commodity === "gas") {
-        drawLineChartEnergy("#chart-energy", "#tooltip-energy", ['iNATGAS', 'NGAS_US', 'NGAS_JP', 'NGAS_EUR'], "gas");
-      } else if (btn.dataset.commodity === "coal") {
-        drawLineChartEnergy("#chart-energy", "#tooltip-energy", ['COAL_AUS', 'COAL_SAFRICA'], "coal");
-      }
-    });
-  });
-
-  // Event listeners for Category buttons (Insight 2)
-  const categoryButtons = document.querySelectorAll(".category-filter-btn");
-  categoryButtons.forEach((btn, idx) => {
-    if (idx === 0) { // first button active
-      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "true");
-    } else {
-      btn.classList.remove("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "false");
-    }
-    btn.addEventListener("click", () => {
-      categoryButtons.forEach(b => {
-        b.classList.remove("bg-blue-900", "text-white", "border-blue-900");
-        b.setAttribute("aria-pressed", "false");
-      });
-      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "true");
-
-      let selectedCategory = btn.dataset.category;
-      let selectedCommodities;
-
-      switch(selectedCategory) {
-        case "metals":
-          selectedCommodities = metalsCommodities;
-          break;
-        case "mineral_fertilizers":
-          selectedCommodities = mineralFertilizersCommodities;
-          break;
-        default:
-          selectedCommodities = [];
-      }
-
-      drawHeatmapCategory("#chart-category-heatmap", "#tooltip-category-heatmap", selectedCommodities);
-    });
-  });
-
-  // Event listeners for Food category buttons (Insight 3)
-  const foodCategoryButtons = document.querySelectorAll(".food-category-btn");
-  foodCategoryButtons.forEach((btn, idx) => {
-    if (idx === 0) { // first button active
-      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "true");
-    } else {
-      btn.classList.remove("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "false");
-    }
-    btn.addEventListener("click", () => {
-      foodCategoryButtons.forEach(b => {
-        b.classList.remove("bg-blue-900", "text-white", "border-blue-900");
-        b.setAttribute("aria-pressed", "false");
-      });
-      btn.classList.add("bg-blue-900", "text-white", "border-blue-900");
-      btn.setAttribute("aria-pressed", "true");
-
-      let selectedCategory = btn.dataset.category;
-      let selectedCommodities;
-
-      switch(selectedCategory) {
-        case 'seafood':
-          selectedCommodities = seafoodCommodities;
-          break;
-        case 'animal_products':
-          selectedCommodities = animalProductsCommodities;
-          break;
-        case 'agriculture':
-          selectedCommodities = agricultureCommodities;
-          break;
-        case 'plantations':
-          selectedCommodities = plantationsCommodities;
-          break;
-        case 'vegetable_oils':
-          selectedCommodities = vegetableOilsCommodities;
-          break;
-        case 'non_food_agriculture':
-          selectedCommodities = nonFoodAgricultureCommodities;
-          break;
-        case 'processed_products':
-          selectedCommodities = processedProductsCommodities;
-          break;
-        case 'timber':
-          selectedCommodities = timberCommodities;
-          break;
-        default:
-          selectedCommodities = [];
-      }
-
-      drawAreaChartFood("#chart-food", "#tooltip-food", selectedCommodities);
-    });
-  });
-
-  // Load CSV data and render default views
-  d3.csv("Selected_International_Commodity_Prices_with_Category.csv").then(data => {
-    allData = data;
-
-    // Default Insight 1 - Oil
-    drawLineChartEnergy("#chart-energy", "#tooltip-energy", ['CRUDE_WTI', 'CRUDE_BRENT', 'CRUDE_DUBAI', 'CRUDE_PETRO'], "oil");
-
-    // Default Insight 2 - Metals
-    drawHeatmapCategory("#chart-category-heatmap", "#tooltip-category-heatmap", metalsCommodities);
-
-    // Default Insight 3 - Seafood
-    drawAreaChartFood("#chart-food", "#tooltip-food", seafoodCommodities);
-  });
-</script>
-
-<style>
-  .energy-btn.active,
-  .food-category-btn.active,
-  .category-filter-btn.active {
-    @apply bg-blue-900 text-white border-blue-900;
-  }
-</style>
+  <script src="script.js" ></script>
 
 </body>
 </html>
